@@ -1,5 +1,8 @@
 pipeline{
     agent any
+    environment {
+        VENV_DIR = 'venv'
+    }
 
     stages{
         stage('Cloning github repo to Jenkins'){
@@ -7,6 +10,20 @@ pipeline{
                 script{
                     echo 'Cloning Github repo to Jenkins ...'
                     checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-token', url: 'https://github.com/shahab460/MLOPS-PROJECT-1.git']])
+                }
+            }
+        }
+
+        stage('Setting up virutal environment and installing dependencies'){
+            steps{
+                script{
+                    echo 'Setting up virutal environment and installing dependencies ...'
+                    sh '''
+                    python -m venv ${VENV_DIR}
+                    . ${VENV_DIR}/bin/activate
+                    pip install --upgrade pip
+                    pip install -e .
+                    '''
                 }
             }
         }
