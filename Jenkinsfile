@@ -16,13 +16,13 @@ pipeline{
             }
         }
 
-        stage('Setting up virutal environment and installing dependencies'){
+        stage('Setting up virtual environment and installing dependencies'){
             steps{
                 script{
-                    echo 'Setting up virutal environment and installing dependencies ...'
+                    echo 'Setting up virtual environment and installing dependencies ...'
                     sh '''
-                    python -m venv ${VENV_DIR}
-                    . ${VENV_DIR}/bin/activate
+                    python -m venv "${VENV_DIR}"
+                    . "${VENV_DIR}/bin/activate"
                     pip install --upgrade pip
                     pip install -e .
                     '''
@@ -33,13 +33,13 @@ pipeline{
         stage('Building and pushing Docker image to GCR'){
             steps{
                 script{
-                    withcredentials([file(credentialsId : 'gcp-key', variable : 'GOOGLE_APPLICATION_CREDENTIALS')]){
+                    withCredentials([file(credentialsId : 'gcp-key', variable : 'GOOGLE_APPLICATION_CREDENTIALS')]){
                         script{
                             echo "Building and publishing Docker image to GCR ..."
                             sh '''
                             export PATH=$PATH:${GCLOUD_PATH}
 
-                            gloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+                            gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
 
                             gcloud config set project ${GCP_PROJECT}
 
