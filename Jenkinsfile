@@ -30,6 +30,18 @@ pipeline{
             }
         }
 
+        stage('Run Training Pipeline'){
+            steps{
+                script{
+                    echo 'Running training pipeline...'
+                    sh '''
+                    . "${VENV_DIR}/bin/activate"
+                    python pipeline/training_pipeline.py
+                    '''
+                }
+            }
+        }
+
         stage('Building and pushing Docker image to GCR'){
             steps{
                 script{
