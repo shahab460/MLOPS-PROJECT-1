@@ -2,7 +2,7 @@ data_ingestion:
   bucket_name : "shah_bucket_905"
   bucket_file_name : "Hotel_Reservations.csv"
   train_ratio : 0.8
-  credentials_path: "C:\\Users\\91905\\Downloads\\ornate-opus-460612-h1-f9a710d2dd85.json"
+  credentials_path: "C:\Users\91905\Downloads\ornate-opus-460612-h1-f9a710d2dd85.json"
   project_id: "ornate-opus-460612-h1"
 
 data_processing:
