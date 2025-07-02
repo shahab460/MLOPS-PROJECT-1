@@ -34,7 +34,16 @@ pipeline {
                 '''
             }
         }
-
+        stage('Debug Credentials') {
+            steps {
+                withCredentials([file(credentialsId: 'gcp-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                    sh '''
+                        echo "GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS"
+                        ls -l $GOOGLE_APPLICATION_CREDENTIALS || echo "File not found"
+                    '''
+                }
+            }
+        }
         stage('Run Training Pipeline') {
             steps {
                 withCredentials([file(credentialsId: 'gcp-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {

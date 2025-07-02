@@ -18,10 +18,24 @@ class DataIngestion:
         self.train_test_ratio = self.config["train_ratio"]
         
         # Initialize Google Cloud Storage client
+        #self.client = storage.Client.from_service_account_json(
+        #    self.config["credentials_path"],  # Add credentials path to config
+        #    project=self.config["project_id"]  # Add project ID to config
+        #)
+
+        ## shah ##
+        # Initialize Google Cloud Storage client using environment variable
+        credentials_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+        if not credentials_path:
+            raise ValueError("GOOGLE_APPLICATION_CREDENTIALS environment variable not set")
+        if not os.path.exists(credentials_path):
+            raise FileNotFoundError(f"Credentials file not found at {credentials_path}")
+        logger.info(f"Loading credentials from: {credentials_path}")
         self.client = storage.Client.from_service_account_json(
-            self.config["credentials_path"],  # Add credentials path to config
-            project=self.config["project_id"]  # Add project ID to config
+            credentials_path,
+            project=self.config["project_id"]
         )
+        ## end shah ##
 
         os.makedirs(RAW_DIR, exist_ok=True)
 
