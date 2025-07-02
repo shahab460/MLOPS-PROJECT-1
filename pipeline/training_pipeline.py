@@ -3,14 +3,16 @@ from src.data_preprocessing import DataProcessor
 from src.model_training import ModelTraining
 from utils.common_functions import read_yaml
 from config.paths_config import *
-
+import yaml
 
 if __name__=="__main__":
 
     ### 1. DATA INGESTION
 
-    data_ingestion = DataIngestion(read_yaml(CONFIG_PATH))
-    #data_ingestion = DataIngestion(config)
+    with open(CONFIG_PATH,'r') as file:
+        config = yaml.safe_load(file)
+    #data_ingestion = DataIngestion(read_yaml(CONFIG_PATH))
+    data_ingestion = DataIngestion(config)
     data_ingestion.run()
     
     ### 2. DATA PROCESSING
